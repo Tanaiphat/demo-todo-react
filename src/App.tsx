@@ -1,6 +1,6 @@
 import { useTodos } from './hooks/useTodos';
 import { TodoInput } from './components/TodoInput';
-// import { TodoItem } from './components/TodoItem';
+import { TodoItem } from './components/TodoItem';
 
 function App() {
   const { todos, isLoading, error, addTodo, toggleTodo, deleteTodo } =
@@ -30,13 +30,20 @@ function App() {
             Your list is empty. Start by adding a task above!
           </div>
         ) : (
-          <div className="text-slate-500 text-center italic">
-            {/*TODO: Todo list items*/}
+          <div className="space-y-3">
+            {todos.map((todo) => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                onToggle={toggleTodo}
+                onDelete={deleteTodo}
+              />
+            ))}
           </div>
         )}
 
         <div className="mt-8 text-center text-slate-600 text-sm">
-          {/*TODO: Items count*/}
+          {todos.length} {todos.length === 1 ? 'item' : 'items'}
         </div>
       </div>
     </div>
