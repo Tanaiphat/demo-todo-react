@@ -3,8 +3,15 @@ import { TodoInput } from './components/TodoInput';
 import { TodoItem } from './components/TodoItem';
 
 function App() {
-  const { todos, isLoading, error, addTodo, toggleTodo, deleteTodo } =
-    useTodos();
+  const {
+    todos,
+    isLoading,
+    error,
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+    updateTodo,
+  } = useTodos();
 
   return (
     <div className="min-h-screen bg-slate-900 py-12 px-4">
@@ -37,6 +44,7 @@ function App() {
                 todo={todo}
                 onToggle={toggleTodo}
                 onDelete={deleteTodo}
+                onEdit={updateTodo}
               />
             ))}
           </div>
