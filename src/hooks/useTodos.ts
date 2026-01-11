@@ -10,6 +10,7 @@ interface UseTodosReturn {
   addTodo: (title: string) => Promise<void>;
   toggleTodo: (id: string) => Promise<void>;
   deleteTodo: (id: string) => Promise<void>;
+  updateTodo: (id: string, title: string) => Promise<void>;
 }
 
 export function useTodos(
@@ -81,6 +82,23 @@ export function useTodos(
     [service]
   );
 
+  const updateTodo = useCallback(
+    async (id: string, title: string) => {
+      try {
+        setError(null);
+        const updated = await service.update(id, { title });
+        if (updated) {
+          setTodos((prev) =>
+            prev.map((todo) => (todo.id === id ? updated : todo))
+          );
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to update todo');
+      }
+    },
+    [service]
+  );
+
   return {
     todos,
     isLoading,
@@ -88,5 +106,6 @@ export function useTodos(
     addTodo,
     toggleTodo,
     deleteTodo,
+    updateTodo,
   };
 }
