@@ -161,4 +161,35 @@ describe('useTodos', () => {
       expect(mockService.delete).toHaveBeenCalledWith('1');
     });
   });
+
+  describe('updateTodo', () => {
+    it('should update the title of a todo', async () => {
+      const existingTodos: Todo[] = [
+        {
+          id: '1',
+          title: 'Original Title',
+          completed: false,
+          createdAt: new Date(),
+        },
+      ];
+      const mockService = createMockService(existingTodos);
+
+      const { result } = renderHook(() => useTodos(mockService));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      expect(result.current.todos[0].title).toBe('Original Title');
+
+      await act(async () => {
+        await result.current.updateTodo('1', 'Updated Title');
+      });
+
+      expect(result.current.todos[0].title).toBe('Updated Title');
+      expect(mockService.update).toHaveBeenCalledWith('1', {
+        title: 'Updated Title',
+      });
+    });
+  });
 });
